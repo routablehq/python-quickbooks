@@ -224,7 +224,7 @@ class QuickBooks(object):
                 "Application authentication failed", error_code=req.status_code, detail=req.text)
 
         try:
-            if (self.use_decimal):
+            if self.use_decimal:
                 result = json.loads(req.text, parse_float=decimal.Decimal)
             else:
                 result = json.loads(req.text)
