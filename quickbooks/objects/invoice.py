@@ -60,7 +60,6 @@ class Invoice(DeleteMixin, QuickbooksPdfDownloadable, QuickbooksManagedObject, Q
         self.AllowIPNPayment = True
         self.DocNumber = ""
         self.PrivateNote = ""
-        self.TxnDate = ""
         self.DueDate = ""
         self.ShipDate = ""
         self.TrackingNum = ""

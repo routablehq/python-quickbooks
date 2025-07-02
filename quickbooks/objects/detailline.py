@@ -220,7 +220,7 @@ class ItemBasedExpenseLineDetail(QuickbooksBaseObject):
 
     def __init__(self):
         super(ItemBasedExpenseLineDetail, self).__init__()
-        self.BillableStatus = None
+        self.BillableStatus = ""
         self.UnitPrice = 0
         self.TaxInclusiveAmt = 0
         self.Qty = 0

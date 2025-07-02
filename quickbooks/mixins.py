@@ -45,7 +45,7 @@ class FromJsonMixin(object):
                     sub_list.append(sub_obj)
 
                 setattr(obj, key, sub_list)
-            elif key in vars(obj):
+            else:
                 setattr(obj, key, json_data[key])
 
         return obj
