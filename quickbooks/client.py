@@ -246,7 +246,7 @@ class QuickBooks(object):
             if "Detail" in error:
                 detail = error["Detail"]
 
-            code = ""
+            code = 0
             if "code" in error and error["code"] != 'null':
                 code = int(error["code"])
 
