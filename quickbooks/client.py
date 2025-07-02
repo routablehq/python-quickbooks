@@ -243,7 +243,7 @@ class QuickBooks(object):
             message = error["Message"]
 
             detail = ""
-            if "Detail" in error:
+            if "Detail" in error and error["Detail"] != 'null':
                 detail = error["Detail"]
 
             code = 0
