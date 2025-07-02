@@ -247,7 +247,7 @@ class QuickBooks(object):
                 detail = error["Detail"]
 
             code = ""
-            if "code" in error:
+            if "code" in error and error["code"] != 'null':
                 code = int(error["code"])
 
             if code >= 10000:
