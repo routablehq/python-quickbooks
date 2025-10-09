@@ -53,7 +53,6 @@ class DepositLine(QuickbooksBaseObject):
         self.LineNum = 0
         self.Description = ""
         self.Amount = 0
-        self.DetailType = "DepositLineDetail"
         self.LinkedTxn = []
         self.CustomField = []
 
