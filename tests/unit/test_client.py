@@ -173,8 +173,22 @@ class ClientTest(QuickbooksUnitTestCase):
 
         process_request.assert_called_with(
                 "GET", url, data={},
-                headers={'Content-Type': 'application/json', 'Accept': 'application/json', 'User-Agent': 'python-quickbooks V3 library'}, 
+                headers={'Content-Type': 'application/json', 'Accept': 'application/json', 'User-Agent': 'python-quickbooks V3 library'},
                 params={'minorversion': client.QuickBooks.MINIMUM_MINOR_VERSION})
+
+    @patch('quickbooks.client.QuickBooks.process_request')
+    def test_make_request_without_custom_fields(self, process_request):
+        process_request.return_value = MockResponseJson()
+
+        qb_client = client.QuickBooks(include_custom_fields=True)
+        qb_client.company_id = "1234"
+        url = "https://sandbox-quickbooks.api.intuit.com/v3/company/1234/test/1/"
+        qb_client.make_request("GET", url, request_body=None, content_type='application/json')
+
+        process_request.assert_called_with(
+                "GET", url, data={},
+                headers={'Content-Type': 'application/json', 'Accept': 'application/json', 'User-Agent': 'python-quickbooks V3 library'},
+                params={'minorversion': client.QuickBooks.MINIMUM_MINOR_VERSION, 'include': 'enhancedAllCustomFields'})
 
     def test_handle_exceptions(self):
         qb_client = client.QuickBooks()
@@ -247,11 +261,11 @@ class ClientTest(QuickbooksUnitTestCase):
         process_request.return_value = MockResponseJson()
         with patch('builtins.open', mock_open(read_data=b'file content')) as mock_file:
             qb_client = client.QuickBooks(auth_client=self.auth_client)
-            qb_client.make_request('POST', 
-                                   'https://sandbox-quickbooks.api.intuit.com/v3/company/COMPANY_ID/attachable', 
-                                   request_body='{"ContentType": "text/plain"}', 
+            qb_client.make_request('POST',
+                                   'https://sandbox-quickbooks.api.intuit.com/v3/company/COMPANY_ID/attachable',
+                                   request_body='{"ContentType": "text/plain"}',
                                    file_path=file_path)
-            
+
             mock_file.assert_called_once_with(file_path, 'rb')
             mock_file.return_value.__enter__.return_value.read.assert_called_once()
             mock_file.return_value.__exit__.assert_called_once()

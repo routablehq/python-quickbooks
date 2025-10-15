@@ -29,6 +29,7 @@ class QuickBooks(object):
     verifier_token = None
     invoice_link = False
     use_decimal = False
+    include_custom_fields = False
 
     sandbox_api_url_v3 = "https://sandbox-quickbooks.api.intuit.com/v3"
     api_url_v3 = "https://quickbooks.api.intuit.com/v3"
@@ -98,6 +99,8 @@ class QuickBooks(object):
         if 'use_decimal' in kwargs:
             instance.use_decimal = kwargs.get('use_decimal')
 
+        instance.include_custom_fields = kwargs.get('include_custom_fields', False)
+
         return instance
 
     def _start_session(self):
@@ -163,7 +166,10 @@ class QuickBooks(object):
             params = {}
 
         params['minorversion'] = self.minorversion
-        
+
+        if self.include_custom_fields:
+            params['include'] = 'enhancedAllCustomFields'
+
         if request_id:
             params['requestid'] = request_id
 
