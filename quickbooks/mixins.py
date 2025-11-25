@@ -254,7 +254,7 @@ class ListMixin(object):
     qbo_json_object_name = ""
 
     @classmethod
-    def all(cls, order_by="", start_position="", max_results=100, qb=None):
+    def all(cls, order_by="", start_position="", max_results=100, qb=None, params=None):
         """Returns list of objects containing all objects in the QuickBooks database"""
         if qb is None:
             qb = QuickBooks()
@@ -274,21 +274,22 @@ class ListMixin(object):
         if max_results:
             select += " MAXRESULTS {0}".format(max_results)
 
-        return cls.query(select, qb=qb)
+        return cls.query(select, qb=qb, params=params)
 
     @classmethod
-    def filter(cls, order_by="", start_position="", max_results="", qb=None, **kwargs):
+    def filter(cls, order_by="", start_position="", max_results="", qb=None, params=None, **kwargs):
         """
         :param order_by:
         :param start_position:
         :param max_results:
         :param qb:
+        :param params: HTTP request params
         :param kwargs: field names and values to filter the query
         :return: Filtered list
         """
         return cls.where(build_where_clause(**kwargs),
                          start_position=start_position, max_results=max_results, order_by=order_by,
-                         qb=qb)
+                         qb=qb, params=params)
 
     @classmethod
     def choose(cls, choices, field="Id", qb=None):
@@ -301,13 +302,14 @@ class ListMixin(object):
         return cls.where(build_choose_clause(choices, field), qb=qb)
 
     @classmethod
-    def where(cls, where_clause="", order_by="", start_position="", max_results="", qb=None):
+    def where(cls, where_clause="", order_by="", start_position="", max_results="", qb=None, params=None):
         """
         :param where_clause: QBO SQL where clause (DO NOT include 'WHERE')
         :param order_by:
         :param start_position:
         :param max_results:
         :param qb:
+        :param params: HTTP request params
         :return: Returns list filtered by input where_clause
         """
         if where_clause:
@@ -325,19 +327,20 @@ class ListMixin(object):
         select = "SELECT * FROM {0} {1}{2}{3}{4}".format(
             cls.qbo_object_name, where_clause, order_by, start_position, max_results)
 
-        return cls.query(select, qb=qb)
+        return cls.query(select, qb=qb, params=params)
 
     @classmethod
-    def query(cls, select, qb=None):
+    def query(cls, select, qb=None, params=None):
         """
         :param select: QBO SQL query select statement
         :param qb:
+        :param params: HTTP request params
         :return: Returns list
         """
         if not qb:
             qb = QuickBooks()
 
-        json_data = qb.query(select)
+        json_data = qb.query(select, params=params)
 
         obj_list = []
 
