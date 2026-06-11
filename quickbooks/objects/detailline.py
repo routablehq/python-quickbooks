@@ -95,7 +95,7 @@ class DescriptionLineDetail(QuickbooksBaseObject):
 
     def __init__(self):
         super(DescriptionLineDetail, self).__init__()
-        self.ServiceDate = ""
+        self.ServiceDate = None
         self.TaxCodeRef = None
 
 
@@ -113,7 +113,7 @@ class SalesItemLineDetail(QuickbooksBaseObject):
         super(SalesItemLineDetail, self).__init__()
         self.UnitPrice = 0
         self.Qty = 0
-        self.ServiceDate = ""
+        self.ServiceDate = None
         self.TaxInclusiveAmt = 0
 
         self.MarkupInfo = None
